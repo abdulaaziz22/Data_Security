@@ -1,6 +1,8 @@
 <?php
+use App\http\Controllers\AdditiveCipherController;
 
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/additive', function () {
+    return view('additive-cipher');
+});
+
+Route::get('/autoplay', function () {
+    return view('autoplay');
 });

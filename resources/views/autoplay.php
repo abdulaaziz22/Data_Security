@@ -1,3 +1,56 @@
+<?php 
+    $encrypted_message = " ";
+if (isset($_GET['submitE']))
+{
+    $plaintext = strtoupper(preg_replace("/[^A-Z]/", "", $_GET['Plaintext']));
+  $key = strtoupper(preg_replace("/[^A-Z]/", "", $_GET['Key']));
+  $key_len = strlen($key);
+
+  // Generate key matrix
+  $matrix = array();
+  $key_chars = str_split($key);
+  $remaining_chars = array_diff(range('A', 'Z'), $key_chars);
+  $remaining_chars = array_values($remaining_chars);
+  array_unshift($key_chars, null);
+  for ($i = 0; $i < 6; $i++) {
+    $matrix[$i] = array_slice($key_chars, $i, 5);
+    if ($i == 0) {
+      continue;
+    }
+    $matrix[$i] = array_merge($matrix[$i], array_slice($remaining_chars, ($i - 1) * 5, 5));
+  }
+
+  // Encrypt plaintext
+  $encrypted_message = '';
+  $len = strlen($plaintext);
+  for ($i = 0; $i < $len; $i += 2) {
+    $pair = substr($plaintext, $i, 2);
+    $pos1 = array();
+    $pos2 = array();
+    for ($j = 0; $j < 6; $j++) {
+      $pos1[] = array_search($pair[0], $matrix[$j]);
+      $pos2[] = array_search($pair[1] ?? 'X', $matrix[$j]);
+    }
+    if ($pos1[0] == $pos2[0]) { // Same row
+      $encrypted_message = $matrix[$pos1[0]][($pos1[1] + 1) % 5];
+      $encrypted_message = $matrix[$pos2[0]][($pos2[1] + 1) % 5];
+    } elseif ($pos1[1] == $pos2[1]) { // Same column
+      $encrypted_message = $matrix[($pos1[0] + 1) % 6][$pos1[1]];
+      $encrypted_message = $matrix[($pos2[0] + 1) % 6][$pos2[1]];
+    } else { // Rectangle
+      $encrypted_message = $matrix[$pos1[0]][$pos2[1]];
+      $encrypted_message = $matrix[$pos2[0]][$pos1[1]];
+    }
+  }
+}
+elseif (isset($_GET['submitD']))
+{
+}
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,11 +141,12 @@
     </style>
 </head>
 <body>
+    <form action="" method="GET">
     <div class="blurry">
         <div class="background-">
             <div class="page-">
                 <div>
-                  <H1>Additive Cipher</H1>
+                  <H1>Autokey Cipher</H1>
                 </div>
                 <div>
                     <!--<label>Selection</label>-->
@@ -101,24 +155,27 @@
 
                 </div>
                 <div>
-                  <!--<label>Plaintext</label>-->
+                  <!--<label>Number1</label>-->
                   <input type="text" required placeholder="Plaintext" name="Plaintext" value="">
                 </div>
                 <div>
-                  <!--<label>Key</label>-->
+                  <!--<label>Number2</label>-->
                   <input type="number" required placeholder="Key" name="Key" value="">
                 </div>
                 <div>
                 <div>
                   <!--<label>Equals</label>-->
-                  <input class="submit-" type="submit" name="submit" value="Result" >
+                  <input class="submit-" type="submit" name="submitE" value="Encryption" >
+                  <input class="submit-" type="submit" name="submitD" value="Decryption" >
+
                 </div>
                 <div>
                     <!--<label>Result</label>-->
-                    <input type="Result" placeholder="Ciphertext" name="Ciphertext" value="" readonly>
+                    <input type="Result" placeholder="Ciphertext" name="Ciphertext" value="<?php echo $encrypted_message ?>" readonly>
                   </div>
               </div>
         </div>
     </Div>
+    </form>
 </body>
 </html>
