@@ -1,10 +1,28 @@
+<?php
+    $encrypted_message = " ";
+if (isset($_GET['submitE']))
+{
+    $_GET['number1'] = intval($_GET['number1']);
+    $_GET['number2'] = intval($_GET['number2']);
+    if ($_GET['number1']>=0){
+    $encrypted_message = $_GET['number1'] % $_GET['number2'];
+    }
+    else{
+    $_GET['number1']= $_GET['number1'] % $_GET['number2'];
+    $encrypted_message = $_GET['number1'] + $_GET['number2'];
+    }
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mod</title>
+    <title>Modulo Operation</title>
     <style>
         * {
             box-sizing: border-box;
@@ -16,7 +34,6 @@
             background-color: #f9f9f9;
         }
         .blurry {
-
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, .8);
@@ -30,7 +47,7 @@
             z-index: 1100;
         }
 
-        .mod-background {
+        .background- {
             width: 700px;
             height: 700px;
             background-color: #03989b;
@@ -40,7 +57,7 @@
             background-color: #03989b;
         }
 
-        .mod-page {
+        .page- {
             width: 600px;
             height: 600px;
             border-radius: 100px 0px 100px 0px;
@@ -64,14 +81,24 @@
             border: 1px solid #dadde1;
         }
 
-        .equals-submit {
+        .a- {
+            width: 40%;
+        }
+
+        .a-:focus {
+            color: #03989b;
+            background-color: #fff;
+            border: 1px solid #03989b;
+        }
+
+        .submit- {
             color: #fff;
             font-size: 1rem;
             font-weight: 700;
             background-color: #03989b;
         }
 
-        .equals-submit:hover {
+        .submit-:hover {
             color: #03989b;
             background-color: #fff;
             border: 1px solid #03989b;
@@ -79,31 +106,38 @@
     </style>
 </head>
 <body>
+    <form action="" method="GET" enctype="multipart/form-data">
     <div class="blurry">
-        <div class="mod-background">
-            <div class="mod-page">
+        <div class="background-">
+            <div class="page-">
                 <div>
-                  <H1>mod "%"</H1>
+                  <H1>Modulo Operation</H1>
                 </div>
                 <div>
-                  <!--<label>Number1</label>-->
-                  <input type="number" required placeholder="number1" name="number1" value="">
+                    <!--<label>Selection</label>-->
+                    <input class="submit- a-" type="button" value="Calculator" name="Encryption">
+
                 </div>
                 <div>
-                  <!--<label>Number2</label>-->
-                  <input type="number" required placeholder="number1" name="number2" value="">
+                  <!--<label>Plaintext</label>-->
+                  <input type="text" required placeholder="Number" name="number1" value="">
+                </div>
+                <div>
+                  <!--<label>Key</label>-->
+                  <input type="text" required placeholder="Number" name="number2" value="">
                 </div>
                 <div>
                 <div>
                   <!--<label>Equals</label>-->
-                  <input class="equals-submit" type="submit" placeholder="=" name="equals">
+                  <input class="submit-" type="submit" name="submitE" value="Ruselt" >
                 </div>
                 <div>
                     <!--<label>Result</label>-->
-                    <input type="Result" placeholder="Result" name="user" value="" readonly>
+                    <input type="Result" placeholder="Ciphertext" name="Ciphertext" value="<?php echo $encrypted_message?>" readonly>
                   </div>
               </div>
         </div>
     </Div>
+    </form>
 </body>
 </html>

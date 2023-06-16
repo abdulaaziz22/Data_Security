@@ -26,3 +26,7 @@ Route::get('/additive', function () {
 Route::get('/autoplay', function () {
     return view('autoplay');
 });
+
+Route::get('/Modulo_Operation', function () {
+    return view('Modulo_Operation');
+});
