@@ -30,3 +30,11 @@ Route::get('/autoplay', function () {
 Route::get('/Modulo_Operation', function () {
     return view('Modulo_Operation');
 });
+
+Route::get('/keygernartion', function () {
+    return view('keygernartion');
+});
+
+Route::get('/s_des', function () {
+    return view('S-DES');
+});
